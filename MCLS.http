@@ -1,0 +1,6 @@
+@MCLS_HostAddress = http://localhost:5241
+
+GET {{MCLS_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
