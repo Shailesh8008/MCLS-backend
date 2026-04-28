@@ -8,5 +8,7 @@
         public string? VesselType { get; set; }
 
         public ICollection<VoyageLog>? VoyageLogs { get; set; }
+
+        public ICollection<User> Users { get; set; }
     }
 }

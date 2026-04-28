@@ -8,5 +8,8 @@ namespace MCLS.Models
         public string? Rank { get; set; }
         public ICollection<VoyageLog>? VoyageLogs { get; set; }
 
+        public Guid? VesselId { get; set; }
+        public Vessel? Vessel { get; set; }
+
     }
 }

@@ -17,10 +17,17 @@ namespace MCLS.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<User>()
+                .HasOne(u => u.Vessel)
+                .WithMany(v => v.Users)
+                .HasForeignKey(u => u.VesselId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             builder.Entity<VoyageLog>()
                 .HasOne(v => v.User)
                 .WithMany(u => u.VoyageLogs)
                 .HasForeignKey(v => v.UserId);
+
             builder.Entity<Vessel>()
                 .HasMany(v => v.VoyageLogs)
                 .WithOne(vl => vl.Vessel)
