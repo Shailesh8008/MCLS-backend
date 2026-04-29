@@ -19,6 +19,7 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IGeneralService, GeneralService>();
 builder.Services.AddAuthentication(e =>
 {
     e.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

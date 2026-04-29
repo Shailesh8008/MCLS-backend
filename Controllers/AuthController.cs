@@ -10,7 +10,9 @@ namespace MCLS.Controllers
     [ApiController]
     public class AuthController(IAuthService authService) : ControllerBase
     {
+
         [Authorize(Roles = "Admin")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto data)
         {
             try
@@ -29,6 +31,7 @@ namespace MCLS.Controllers
             }
         }
 
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] RegisterDto data)
         {
             try
@@ -45,6 +48,13 @@ namespace MCLS.Controllers
                 return StatusCode(500, ControllerResponse<string>.Failure("Internal server error", null));
                 throw;
             }
+        }
+
+        [Authorize(Roles = "Admin,Captain")]
+        [HttpGet("dashboard-summary")]
+        public async Task<IActionResult> DashboardSummary()
+        {
+
         }
     }
 }

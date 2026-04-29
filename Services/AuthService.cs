@@ -12,7 +12,7 @@ using System.Text;
 
 namespace MCLS.Services
 {
-    public class AuthService(UserManager<User> _userManager,
+    public class AuthService(UserManager<User> _userManager, RoleManager<IdentityRole> _roleManager,
         IConfiguration _configuration, AppDbContext _context) : IAuthService
     {
         public async Task<ServiceResponse<List<string>>> Register(RegisterDto data)
@@ -22,6 +22,10 @@ namespace MCLS.Services
                 if (data.Name == null || data.Email == null || data.Password == null || data.Rank == null)
                 {
                     return ServiceResponse<List<string>>.Failure("Name, Email, Password, Rank are required", null, 400);
+                }
+                if (!await _roleManager.RoleExistsAsync(data.Rank))
+                {
+                    return ServiceResponse<List<string>>.Failure("Rank does not exist, please create this rank first", null, 400);
                 }
 
                 var userExists = await _userManager.FindByEmailAsync(data.Email);
@@ -100,6 +104,7 @@ namespace MCLS.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.Name),
+                new Claim("VesselId", user.VesselId?.ToString() ?? "")
             };
             foreach (var role in roles)
             {

@@ -7,7 +7,10 @@
         public string? Latitude { get; set; }
         public string? Longitude { get; set; }
         public double FuelConsumed { get; set; }
+        public double SpeedInKiloMeter { get; set; }
         public double DistanceSailed { get; set; }
+        public DateTime createdAt { get; set; } = DateTime.Now;
+
 
 
         public Guid VesselId { get; set; }

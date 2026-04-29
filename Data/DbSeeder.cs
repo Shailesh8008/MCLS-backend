@@ -32,13 +32,22 @@ namespace MCLS.Data
                         Rank = "Fleet Manager",
                         EmailConfirmed = true
                     };
-                    await userManager.CreateAsync(admin, adminPassword);
-                    await userManager.AddToRoleAsync(admin, "Admin");
+                    var createResult = await userManager.CreateAsync(admin, adminPassword);
+
+                    if (createResult.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(admin, "Admin");
+                    }
+                    else
+                    {
+                        var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
+                        throw new Exception($"Admin creation failed: {errors}");
+                    }
                 }
             }
             catch (Exception)
             {
-                Console.WriteLine("Error Seeding initial data (Roles and Admin details)");
+                Console.WriteLine("--------------------------------------Error Seeding initial data (Roles and Admin details)--------------------------------------");
                 throw;
             }
         }

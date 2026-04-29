@@ -7,7 +7,7 @@
         public bool Ok { get; set; }
         public int Status { get; set; }
 
-        public static ServiceResponse<T> Success(string message, T? data, int status = 200)
+        public static ServiceResponse<T> Success(string? message, T? data, int status = 200)
         {
             return new ServiceResponse<T> { Message = message, Data = data, Ok = true, Status = status };
         }
