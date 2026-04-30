@@ -5,7 +5,8 @@
         public Guid Id { get; set; }
         public string? Name { get; set; }
         public string? IMONumber { get; set; }
-        public string? VesselType { get; set; }
+        public string? Type { get; set; }
+        public string? Flag { get; set; }
 
         public ICollection<VoyageLog>? VoyageLogs { get; set; }
 

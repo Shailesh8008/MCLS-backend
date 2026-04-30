@@ -3,9 +3,10 @@
     public class RecentLogDto
     {
         public Guid Id { get; set; }
-        public string VesselName { get; set; } = string.Empty;
-        public string DateDisplay { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
-        public double CurrentSpeed { get; set; }
+        public DateTime LogDate { get; set; }
+        public string? ReportedBy { get; set; }
+        public string? VesselName { get; set; }
+        public double? SpeedInKiloMeter { get; set; }
+
     }
 }

@@ -50,11 +50,6 @@ namespace MCLS.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin,Captain")]
-        [HttpGet("dashboard-summary")]
-        public async Task<IActionResult> DashboardSummary()
-        {
 
-        }
     }
 }
