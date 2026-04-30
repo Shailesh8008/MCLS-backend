@@ -20,6 +20,7 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddDefaultTokenProviders();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGeneralService, GeneralService>();
+builder.Services.AddScoped<IVoyageLogService, VoyageLogService>();
 builder.Services.AddAuthentication(e =>
 {
     e.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

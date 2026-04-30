@@ -9,7 +9,7 @@
         public string? Type { get; set; }
         public int TotalLogsSubmitted { get; set; }
         public List<RecentLogDto> History { get; set; } = new();
-        public List<UserDto> AssignedStaff { get; set; } = new();
+        public List<MinimalUserDto> AssignedStaff { get; set; } = new();
         public string LastReportedPosition { get; set; } = "Unknown";
 
 

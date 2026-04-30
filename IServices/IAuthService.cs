@@ -7,5 +7,7 @@ namespace MCLS.IServices
     {
         Task<ServiceResponse<List<string>>> Register(RegisterDto data);
         Task<ServiceResponse<string>> Login(RegisterDto data);
+
+        Task<ServiceResponse<List<string>>> UpdateUser(RegisterDto userDetails, string userId);
     }
 }

@@ -50,6 +50,25 @@ namespace MCLS.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPut("update-user/{id}")]
+        public async Task<IActionResult> UpdateUser([FromBody] RegisterDto userData, [FromRoute] string id)
+        {
+            try
+            {
+                var result = await authService.UpdateUser(userData, id);
+                if (!result.Ok)
+                {
+                    return StatusCode(result.Status, ControllerResponse<List<string>>.Failure(result.Message, result.Data));
+                }
+                return StatusCode(result.Status, ControllerResponse<string>.Success(result.Message, null));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, ControllerResponse<string>.Failure("Internal server error", null));
+                throw;
+            }
+        }
 
     }
 }

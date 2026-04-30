@@ -9,7 +9,7 @@ namespace MCLS.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class GeneralController(IGeneralService generalService) : ControllerBase
+    public class GeneralController(IGeneralService generalService, IVoyageLogService voyageLogService) : ControllerBase
     {
         [HttpGet("summary")]
         public async Task<IActionResult> DashboardSummary()
@@ -90,5 +90,24 @@ namespace MCLS.Controllers
             }
         }
 
+        [Authorize(Roles = "Captain")]
+        [HttpPost("create-log")]
+        public async Task<IActionResult> CreateLog([FromBody] VoyageLogDto voyageLog)
+        {
+            try
+            {
+                var result = await voyageLogService.CreateVoyageLog(voyageLog, User);
+                if (!result.Ok)
+                {
+                    return StatusCode(result.Status, ControllerResponse<string>.Failure(result.Message, null));
+                }
+                return StatusCode(result.Status, ControllerResponse<string>.Success(result.Message, null));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, ControllerResponse<string>.Failure("Internal server error", null));
+                throw;
+            }
+        }
     }
 }

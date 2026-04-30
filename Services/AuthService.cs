@@ -35,7 +35,7 @@ namespace MCLS.Services
                 }
                 var user = new User { UserName = data.Email, Name = data.Name, Email = data.Email, Rank = data.Rank };
 
-                if (data.VesselId != null)
+                if (!string.IsNullOrWhiteSpace(data.VesselId))
                 {
                     Guid vesselId;
                     if (!Guid.TryParse(data.VesselId, out vesselId))
@@ -123,5 +123,53 @@ namespace MCLS.Services
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public async Task<ServiceResponse<List<string>>> UpdateUser(RegisterDto userDetails, string userId)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return ServiceResponse<List<string>>.Failure("Invalid userId", null, 400);
+                }
+                if (!string.IsNullOrWhiteSpace(userDetails.Password))
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var result = await _userManager.ResetPasswordAsync(user, token, userDetails.Password);
+                    if (!result.Succeeded)
+                    {
+                        return ServiceResponse<List<string>>.Failure("Invalid password", result.Errors.Select(e => e.Description).ToList(), 400);
+                    }
+                }
+
+                user.Name = userDetails.Name ?? user.Name;
+                user.Email = userDetails.Email ?? user.Email;
+                user.Rank = userDetails.Rank ?? user.Rank;
+                if (!string.IsNullOrWhiteSpace(userDetails.VesselId))
+                {
+                    Guid vesselId;
+                    if (!Guid.TryParse(userDetails.VesselId, out vesselId))
+                    {
+                        return ServiceResponse<List<string>>.Failure("Invalid vesselId", null, 400);
+                    }
+                    var vessel = await _context.Vessels.AnyAsync(v => v.Id == vesselId);
+                    if (!vessel)
+                    {
+                        return ServiceResponse<List<string>>.Failure("Vessel not found", null, 404);
+                    }
+                    user.VesselId = vesselId;
+                }
+                await _userManager.UpdateAsync(user);
+                return ServiceResponse<List<string>>.Success("Updated successfully!", null, 200);
+            }
+            catch (Exception)
+            {
+                return ServiceResponse<List<string>>.Failure("Internal server error", null, 500);
+                throw;
+            }
+
+        }
+
     }
 }

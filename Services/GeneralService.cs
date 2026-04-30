@@ -133,9 +133,8 @@ namespace MCLS.Services
                         IMONumber = v.IMONumber,
                         Type = v.Type,
                         Flag = v.Flag,
-                        AssignedStaff = v.Users.Select(u => new UserDto
+                        AssignedStaff = v.Users.Select(u => new MinimalUserDto
                         {
-                            Id = u.Id,
                             Name = u.Name,
                             Email = u.Email,
                             Rank = u.Rank
@@ -166,5 +165,6 @@ namespace MCLS.Services
                 throw;
             }
         }
+
     }
 }
