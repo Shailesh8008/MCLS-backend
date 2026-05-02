@@ -109,5 +109,45 @@ namespace MCLS.Controllers
                 throw;
             }
         }
+
+        [Authorize(Roles = "Captain,Admin")]
+        [HttpGet("recent-report-pdf/{vesselId}")]
+        public async Task<IActionResult> RecentReportPdf([FromRoute] string vesselId)
+        {
+            try
+            {
+                var result = await voyageLogService.RecentReportPdf(vesselId);
+                if (!result.Ok)
+                {
+                    return StatusCode(result.Status, ControllerResponse<string>.Failure(result.Message, null));
+                }
+                return File(result.Data, "application/pdf", "NoonReport.pdf");
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, ControllerResponse<string>.Failure("Internal server error", null));
+                throw;
+            }
+        }
+
+        [Authorize(Roles = "Captain,Admin")]
+        [HttpGet("specific-report-pdf/{logId}")]
+        public async Task<IActionResult> SpecificReportPdf([FromRoute] string logId)
+        {
+            try
+            {
+                var result = await voyageLogService.SpecificReportPdf(logId);
+                if (!result.Ok)
+                {
+                    return StatusCode(result.Status, ControllerResponse<string>.Failure(result.Message, null));
+                }
+                return File(result.Data, "application/pdf", "NoonReport.pdf");
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, ControllerResponse<string>.Failure("Internal server error", null));
+                throw;
+            }
+        }
     }
 }

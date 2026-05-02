@@ -8,9 +8,9 @@
         public double FuelConsumed { get; set; }
         public double SpeedInKiloMeter { get; set; }
         public double DistanceSailed { get; set; }
+        public double FuelEfficiency { get; set; }
+        public double ROB { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-
 
         public Guid VesselId { get; set; }
         public string? UserId { get; set; }
